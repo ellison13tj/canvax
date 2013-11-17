@@ -1,15 +1,20 @@
-KISSY.add("canvax/display/DisplayObjectContainer" , function(S , DisplayObject){
+KISSY.add("canvax/display/DisplayObjectContainer" , function(S ,Base, DisplayObject){
 
-    DisplayObjectContainer = function(){
+    DisplayObjectContainer = function(opt){
        var self = this;
        self.children = [];
        self.mouseChildren = [];
        arguments.callee.superclass.constructor.apply(this, arguments);
+
+       //所有的容器默认支持event 检测，因为 可能有里面的shape是eventEnable是true的
+       //如果用户有强制的需求让容器下的所有元素都 不可检测，可以调用
+       //DisplayObjectContainer的 setEventEnable() 方法
+       self._eventEnabled = true;
     };
 
     
 
-    S.extend(DisplayObjectContainer , DisplayObject , {
+    Base.creatClass(DisplayObjectContainer , DisplayObject , {
         addChild : function(child){
             if(this.getChildIndex(child) != -1) {
                 child.parent = this;
@@ -61,7 +66,7 @@ KISSY.add("canvax/display/DisplayObjectContainer" , function(S , DisplayObject){
             return child;
         },
         removeChild : function(child) {
-            return this.removeChildAt(S.indexOf( child , this.children ));
+            return this.removeChildAt(_.indexOf( child , this.children ));
         },
         removeChildAt : function(index) {
 
@@ -117,11 +122,11 @@ KISSY.add("canvax/display/DisplayObjectContainer" , function(S , DisplayObject){
             return this.children[index];
         },
         getChildIndex : function(child) {
-            return S.indexOf( child , this.children );
+            return _.indexOf( child , this.children );
         },
         setChildIndex : function(child, index){
             if(child.parent != this) return;
-            var oldIndex = S.indexOf(child , this.children);
+            var oldIndex = _.indexOf(child , this.children);
             if(index == oldIndex) return;
             this.children.splice(oldIndex, 1);
             this.children.splice(index, 0, child);
@@ -132,13 +137,16 @@ KISSY.add("canvax/display/DisplayObjectContainer" , function(S , DisplayObject){
         getNumChildren : function() {
             return this.children.length;
         },
+
         //获取x,y点上的所有object  num 需要返回的obj数量
         getObjectsUnderPoint : function(x, y , num) {
+
+             
             var result = [];
             for(var i = this.children.length - 1; i >= 0; i--) {
                 var child = this.children[i];
 
-                if(child == null || !child.eventEnabled) {
+                if(child == null || !child._eventEnabled) {
                     continue;
                 }
 
@@ -179,6 +187,7 @@ KISSY.add("canvax/display/DisplayObjectContainer" , function(S , DisplayObject){
 
 },{
    requires:[
+     "canvax/core/Base",
      "canvax/display/DisplayObject"
    ]
 })

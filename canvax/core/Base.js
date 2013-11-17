@@ -1,4 +1,4 @@
-KISSY.add("canvax/core/Core" , function(S , Base ){
+KISSY.add("canvax/core/Base" , function(S){
 
 
     /**
@@ -18,7 +18,7 @@ KISSY.add("canvax/core/Core" , function(S , Base ){
 
 
 
-    var Core = {
+    var Base = {
         __emptyFunc : function(){},
         //retina 屏幕优化
         _devicePixelRatio : window.devicePixelRatio || 1,
@@ -42,6 +42,39 @@ KISSY.add("canvax/core/Core" , function(S , Base ){
             newDom.setAttribute('id', id);
             return newDom;
         },
+        createObject : function(proto, constructor) {
+            var newProto;
+            var ObjectCreate = Object.create;
+            if (ObjectCreate) {
+                newProto = ObjectCreate(proto);
+            } else {
+                Base.__emptyFunc.prototype = proto;
+                newProto = new Base.__emptyFunc();
+            }
+            newProto.constructor = constructor;
+            return newProto;
+        },
+
+        creatClass : function(r, s, px){
+            if (!s || !r) {
+                return r;
+            }
+
+            var sp = s.prototype,
+                rp;
+
+            // add prototype chain
+            rp = Base.createObject(sp, r);
+            r.prototype = _.extend(rp, r.prototype);
+            r.superclass = Base.createObject(sp, s);
+
+            // add prototype overrides
+            if (px) {
+                _.extend(rp, px);
+            }
+
+            return r;
+        },
         debugMode : false,
         log : function() {
             var self = this;
@@ -63,17 +96,24 @@ KISSY.add("canvax/core/Core" , function(S , Base ){
 
         getContext : function(_ctx) {
             if (!_ctx) {
-                if (window.G_vmlCanvasManager) {
-                    var _div = document.createElement('div');
-                    _div.style.position = 'absolute';
-                    _div.style.top = '-1000px';
-                    document.body.appendChild(_div);
+                //if (window.G_vmlCanvasManager) {
+                //    var _div = document.createElement('div');
+                //    _div.style.position = 'absolute';
+                //    _div.style.top = '-1000px';
+                //    document.body.appendChild(_div);
 
-                    _ctx = G_vmlCanvasManager.initElement(_div)
-                        .getContext('2d');
-                } else {
-                    _ctx = document.createElement('canvas').getContext('2d');
-                }
+                //    _ctx = G_vmlCanvasManager.initElement(_div).getContext('2d');
+                //} else {
+
+
+                   //上面注释掉的为兼容excanvas的代码，下面的这个判断为兼容flashCanvas的代码
+                   var canvas = document.createElement('canvas')
+                   if(typeof FlashCanvas != "undefined" && FlashCanvas.initElement){
+                      FlashCanvas.initElement(canvas);
+                   }
+
+                    _ctx = canvas.getContext('2d');
+                //}
             }
             return _ctx;
         },
@@ -83,10 +123,10 @@ KISSY.add("canvax/core/Core" , function(S , Base ){
             return this._UID++;
         },
         createId : function(name) {
-            //if end with a digit, then append an underscore before appending
+            //if end with a digit, then append an undersBase before appending
             var charCode = name.charCodeAt(name.length - 1);
             if (charCode >= 48 && charCode <= 57) name += "_";
-            return name + Core.getUID();
+            return name + Base.getUID();
         },
         getType : function(obj) { //取得类型
             if (obj == null) {
@@ -100,10 +140,9 @@ KISSY.add("canvax/core/Core" , function(S , Base ){
 
     }
 
-    return Core
+    return Base
 
 },{
     requires : [
-        "base"
         ]
 })

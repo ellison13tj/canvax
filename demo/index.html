@@ -12,7 +12,7 @@
 
 <script type="text/javascript" src="http://g.tbcdn.cn/kissy/k/1.3.1/seed-min.js"></script>
 <script type="text/javascript" src="../canvax/library/underscore.js"></script>
-
+<script type="text/javascript" src="../canvax/library/flashCanvas/flashcanvas.js"></script>
 </head>
 
 <body>
@@ -32,7 +32,6 @@
 
        var colorInd=0;
        window.stage=null;
-
        KISSY.use("canvax/Canvax ,canvax/display/Stage , canvax/display/Shape , canvax/utils/color , canvax/shape/Circle ,canvax/shape/Beziercurve ,canvax/shape/BrokenLine, canvax/shape/Droplet , canvax/shape/Ellipse ,canvax/shape/Heart,canvax/shape/Sector, canvax/shape/Polygon,canvax/shape/Path,canvax/shape/Isogon, canvax/shape/Rect ,canvax/shape/Line ,node" , function( S ,Canvax, Stage , Shape,color,Circle,Beziercurve,BrokenLine,Droplet,Ellipse,Heart,Sector,Polygon,Path,Isogon,Rect,Line ){
 
            S.all("#ready").html("ready")
@@ -42,7 +41,7 @@
            var width = box.width();
            var height = box.height();
 
-           
+         
            canvax = new Canvax({
               id : "canvax",
               el : box
@@ -102,6 +101,7 @@
                    fillStyle : 'rgba(220, 20, 60, 0.8)',          // rgba supported
                    strokeStyle : color.getColor(colorInd++),  // getColor from default palette
                    lineWidth : 5
+                   //lineType  : "dashed"
                }
            });
            /*
@@ -176,8 +176,8 @@
                    x : 300,
                    y : 300,
 
-                   a : 50,
-                   b : 70,
+                   hr : 50,
+                   vr : 70,
                    fillStyle:color.getColor(colorInd++),
                    strokeStyle:color.getColor(colorInd++),
                    lineWidth : 4
@@ -196,8 +196,8 @@
                  x : 350,
                  y :120,
 
-                 a : 70,
-                 b : 30,
+                 hr : 70,
+                 vr : 30,
                  fillStyle:color.getColor(colorInd++),
                  strokeStyle:color.getColor(colorInd++),
                  lineWidth : 8
@@ -207,7 +207,7 @@
 
 
           ellipse.on("mouseover" , function(){
-              this.context.lineWidth=2
+              this.context.lineWidth=12
           });
           ellipse.on("mouseout" , function(){
               this.context.lineWidth=8
@@ -219,8 +219,8 @@
                  x  : 450,
                  y  : 150,
 
-                a : 50,
-                b : 70,
+                 hr : 50,
+                 vr : 70,
                 fillStyle:color.getColor(colorInd++),
                 strokeStyle:color.getColor(colorInd++),
                 lineWidth : 2
@@ -233,6 +233,8 @@
          heart.on("mouseout" , function(){
              this.context.lineWidth = 2
          });
+
+         
 
           var sector =new Sector({
               id : "sector",
@@ -268,21 +270,22 @@
                  x:400,
                  y:50,
 
+                  lineType  : "dashed",
                  pointList : [[310, 120], [360, 120], [348, 230], [250, 340], [146, 200]],
                  fillStyle:color.getColor(colorInd++),
                  strokeStyle:color.getColor(colorInd++),
-                 lineWidth : 3
+                 lineWidth : 2
 
              }
 
          });
 
          polygon.on("mouseover",function(){
-             this.context.lineWidth=8
+             this.context.lineWidth=2
                     });
 
          polygon.on("mouseout",function(){
-             this.context.lineWidth = 3
+             this.context.lineWidth = 8
          });
 
          
@@ -338,15 +341,16 @@
                   r : 70,
                   n : 9,
                   lineWidth : 6,
+
                   fillStyle:color.getColor(colorInd++),
                   strokeStyle:color.getColor(colorInd++)
               }
           });
           isogon.on("mouseover" , function(){
-              this.context.lineWidth = 10;
+              this.context.lineWidth = 3;
           });
           isogon.on("mouseout"  , function(){
-              this.context.lineWidth = 6
+              this.context.lineWidth = 3
           })
 
 
@@ -373,15 +377,15 @@
 
               radius: [10, 20,0],
               //lineWidth : 6,
-              fillStyle:color.getColor(colorInd++),
+              fillStyle:color.getColor(colorInd++)
               //strokeStyle:color.getColor(colorInd++),
-              shadowColor :"blue",
+              //shadowColor :"blue",
 
-              shadowOffsetX : 3,
+              //shadowOffsetX : 3,
 
-              shadowOffsetY : 3,
+              //shadowOffsetY : 3,
 
-              shadowBlur : 0
+              //shadowBlur : 0
 
             }
           });
@@ -422,8 +426,8 @@
 
            //stage.addChild(sector);
            //stage.addChild(rect1);
-
-
+           
+           
            stage.addChild(rect);
            stage.addChild(circle2);
            stage.addChild(bezier);
@@ -437,16 +441,26 @@
 
            stage.addChild(path1);
            stage.addChild(isogon);
-
            stage.addChild(polygon);
+
+
            stage.addChild(heart);
+           
            stage.addChild(droplet);
-           stage.addChild(line);
 
-
-
+           
+           
 
            canvax.addChild(stage);
+
+           stage.addChild(line);
+           setTimeout(function(){
+               
+               line.toBack(1);
+           },1000)
+
+
+
 
        })
    }) 

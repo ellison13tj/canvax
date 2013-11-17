@@ -1,5 +1,5 @@
 KISSY.add("canvax/shape/Circle" ,
-    function(S , Shape) {
+    function(S , Shape , Base) {
         var Circle = function(opt) {
             var self = this;
             self.type = "Circle";
@@ -15,7 +15,7 @@ KISSY.add("canvax/shape/Circle" ,
             arguments.callee.superclass.constructor.apply(this, arguments);
         }
 
-        S.extend(Circle , Shape , {
+        Base.creatClass(Circle , Shape , {
            /**
              * 创建圆形路径
              * @param {Context2D} ctx Canvas 2D上下文
@@ -27,7 +27,6 @@ KISSY.add("canvax/shape/Circle" ,
                 }
                 //ctx.arc(this.get("x"), this.get("y"), style.r, 0, Math.PI * 2, true);
                 ctx.arc(0 , 0, style.r, 0, Math.PI * 2, true);
-                return this;
             },
 
             /**
@@ -55,7 +54,8 @@ KISSY.add("canvax/shape/Circle" ,
     },
     {
         requires : [
-         "canvax/display/Shape"
+         "canvax/display/Shape",
+         "canvax/core/Base"
         ]
     }
 );

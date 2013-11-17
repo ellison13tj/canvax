@@ -1,4 +1,4 @@
-KISSY.add("canvax/shape/Rect" , function( S , Shape ){
+KISSY.add("canvax/shape/Rect" , function( S , Shape , Base){
   var Rect = function(opt){
       var self = this;
       self.type = "Rect";
@@ -14,7 +14,7 @@ KISSY.add("canvax/shape/Rect" , function( S , Shape ){
       arguments.callee.superclass.constructor.apply(this, arguments);
   };
 
-  S.extend( Rect , Shape , {
+  Base.creatClass( Rect , Shape , {
       /**
        * 绘制圆角矩形
        * @param {Context2D} ctx Canvas 2D上下文
@@ -86,11 +86,22 @@ KISSY.add("canvax/shape/Rect" , function( S , Shape ){
           if(!style.$model.radius.length) {
               var x = 0;
               var y = 0;
-              ctx.moveTo(x, y);
+
+              //ctx.moveTo(x, y);
+              /*
               ctx.lineTo(x + this.context.width, y);
               ctx.lineTo(x + this.context.width, y + this.context.height);
               ctx.lineTo(x, y + this.context.height);
               ctx.lineTo(x, y);
+              */
+
+              if(!!ctx.fillStyle){
+                 ctx.fillRect(x,y,this.context.width,this.context.height)
+              }
+              
+              if(!!ctx.lineWidth){
+                 ctx.strokeRect(x,y,this.context.width,this.context.height);
+              }
               //ctx.rect(x, y, this.get("width"), this.get("height"));
           } else {
               this._buildRadiusPath(ctx, style);
@@ -124,6 +135,7 @@ KISSY.add("canvax/shape/Rect" , function( S , Shape ){
 
 } , {
   requires : [
-    "canvax/display/Shape"  
+    "canvax/display/Shape",
+    "canvax/core/Base"
   ]
 });
