@@ -494,6 +494,9 @@ body {
   display: none; /* Hide by default, but at >768px, show it */
   margin-bottom: 8px;
 }
+.bs-sidebar .nav .about .nav {
+  display: block;
+}
 .bs-sidebar .nav .nav > li > a {
   padding-top:    3px;
   padding-bottom: 3px;
