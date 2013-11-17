@@ -1,4 +1,4 @@
-KISSY.add("canvax/shape/Path" , function( S , Shape ){
+KISSY.add("canvax/shape/Path" , function( S , Shape , Base){
 
    var Path=function(opt){
        var self = this;
@@ -21,12 +21,13 @@ KISSY.add("canvax/shape/Path" , function( S , Shape ){
        arguments.callee.superclass.constructor.apply(this , arguments);
    };
  
-   S.extend( Path , Shape , {
+   Base.creatClass( Path , Shape , {
         _parsePathData : function(data) {
             if (!data) {
                 return [];
             }
 
+           
             // command string
             var cs = data;
 
@@ -37,6 +38,8 @@ KISSY.add("canvax/shape/Path" , function( S , Shape ){
             ];
             cs = cs.replace(/  /g, ' ');
             cs = cs.replace(/ /g, ',');
+            //cs = cs.replace(/(.)-/g, "$1,-");
+            cs = cs.replace(/(\d)-/g,'$1,-');
             cs = cs.replace(/,,/g, ',');
             var n;
             // create pipes so that we can split the data
@@ -58,10 +61,11 @@ KISSY.add("canvax/shape/Path" , function( S , Shape ){
                 //有的时候，比如“22，-22” 数据可能会经常的被写成22-22，那么需要手动修改
                 //str = str.replace(new RegExp('-', 'g'), ',-');
 
-                str = str.replace(/(.)-/g, "$1,-")
+                //str = str.replace(/(.)-/g, "$1,-")
 
 
                 var p = str.split(',');
+                
                 if (p.length > 0 && p[0] === '') {
                     p.shift();
                 }
@@ -499,6 +503,7 @@ KISSY.add("canvax/shape/Path" , function( S , Shape ){
 
 } , {
    requires : [
-     "canvax/display/Shape"    
+     "canvax/display/Shape",
+     "canvax/core/Base"
    ]
 });

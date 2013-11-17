@@ -1,4 +1,4 @@
-KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,StageEvent, propertyFactory ){
+KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Base,StageEvent, propertyFactory ){
    var Canvax=function(opt){
        var self = this;
        self.type = "canvax";
@@ -24,8 +24,7 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
        self._hoverStage = null;
        
        //为整个项目提供像素检测的容器
-       self._pixelCanvas = null
-       self._pixlCtx = null;
+       self._pixelCtx = null;
 
        self._isReady = false;
 
@@ -36,14 +35,12 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
        self._touching = false;
        //正在拖动，前提是_touching=true
        self._draging =false;
-
-
+       
        arguments.callee.superclass.constructor.apply(this, arguments);
-
        
    };
-
-   S.extend( Canvax , DisplayObjectContainer , {
+   
+   Base.creatClass(Canvax , DisplayObjectContainer , {
        init : function(){
           var self = this;
 
@@ -54,7 +51,6 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
           //TODO:创建stage的时候一定要传入width height  两个参数
           self._hoverStage = new Stage( {
             id : "activCanvas"+(new Date()).getTime(),
-            eventEnabled:false,
             context : {
               width : self.context.width,
               height: self.context.height
@@ -110,12 +106,13 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
         * @return {Object} 上下文
        */
        createPixelContext : function() {
-           if(!document.createElement('canvas').getContext){
-             return;
-           }
            var self = this;
-           self._pixelCanvas = Core._createCanvas("_pixelCanvas",self.context.width,self.context.height);
-           self._pixelCtx = self._pixelCanvas.getContext('2d');
+           var _pixelCanvas = Base._createCanvas("_pixelCanvas",self.context.width,self.context.height);
+           document.body.appendChild( _pixelCanvas );
+           if(typeof FlashCanvas != "undefined" && FlashCanvas.initElement){
+               FlashCanvas.initElement( _pixelCanvas );
+           }
+           self._pixelCtx = _pixelCanvas.getContext('2d');
 
        },
        __mouseHandler : function(event) {
@@ -128,26 +125,31 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
            self.mouseY = mouseY;
 
            if(event.type == "mousedown"){
+              
               if(!self.mouseTarget){
                 var obj = self.getObjectsUnderPoint(self.mouseX, self.mouseY, 1)[0];
                 if(obj){
                   self.mouseTarget = obj;
                 }
               }
-              self.mouseTarget && (self._touching = true);
+              self.mouseTarget && self.dragEnabled && (self._touching = true);
            }
 
            if(event.type == "mouseup" || event.type == "mouseout"){
               if(self._draging == true){
                  //说明刚刚在拖动
+                
                  self.dragEnd && self.dragEnd(event);  
-                 if(!self.mouseTarget._hoverClass){
-                     //没有hover态 ， 但是 拖动了， 那么要先把本尊给显示出来先
-                     self.mouseTarget.context.visible = true;
-                 }
+                
+                 //拖动停止， 那么要先把本尊给显示出来先
+                 //这里还可以做优化，因为拖动停止了但是还是在hover状态，没必要把本尊显示的。
+                 //self.mouseTarget.context.visible = true;
+
                  var _dragDuplicate = self._hoverStage.getChildById(self.mouseTarget.id);
                  self.mouseTarget.context = _dragDuplicate.context;
                  self.mouseTarget.context.$owner = self.mouseTarget;
+                 //这个时候的target还是隐藏状态呢
+                 self.mouseTarget.context.visible = false;
                  self.mouseTarget._updateTransform();
                  if(event.type == "mouseout"){
                      _dragDuplicate.destroy();
@@ -178,7 +180,7 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
                      if(!_dragDuplicate){
                          _dragDuplicate = self.mouseTarget.clone();
                          _dragDuplicate._transform = _dragDuplicate.getConcatenatedMatrix();
-
+                         self._hoverStage.addChild( _dragDuplicate );
                      }
                      _dragDuplicate.context = propertyFactory(self.mouseTarget.context.$model);
                      _dragDuplicate.context.$owner = _dragDuplicate;
@@ -186,7 +188,6 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
                      _dragDuplicate.context.visible = true;
 
                      
-                     self._hoverStage.addChild( _dragDuplicate );
                      _dragDuplicate._dragPoint = _dragDuplicate.globalToLocal(self.mouseX , self.mouseY)
                      
                   } else {
@@ -211,7 +212,7 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
                //其他的事件就直接在target上面派发事件
                if(this.mouseTarget){
                    //event
-                   var e = S.merge(self._Event , event);
+                   var e = _.extend(self._Event , event);
                    e.target = e.currentTarget = this.mouseTarget || this;
                    e.mouseX = this.mouseX;
                    e.mouseY = this.mouseY;
@@ -235,20 +236,31 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
                return;
            }
            var obj = this.getObjectsUnderPoint(this.mouseX, this.mouseY, 1)[0];
-           var e = S.merge(this._Event , event);
+           var e = _.extend(this._Event , event);
 
            e.target = e.currentTarget = obj;
            e.mouseX = this.mouseX;
            e.mouseY = this.mouseY;
 
+            
 
            if(  oldObj &&  oldObj != obj  || e.type=="mouseout" ) {
                if(!oldObj){
                   return;
                }
+               
                this.mouseTarget = null;
                e.type = "mouseout";
                e.target = e.currentTarget = oldObj;
+
+               //之所以放在dispatchEvent(e)之前，是因为有可能用户的mouseout处理函数
+               //会有修改visible的意愿
+               
+               if(!oldObj.context.visible){
+                  oldObj.context.visible = true;
+               }
+
+
                oldObj.dispatchEvent(e);
                if(oldObj._hoverClass){
                   //说明刚刚over的时候有添加样式
@@ -299,7 +311,7 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
           if(this.__intervalID != null) {
               clearInterval(this.__intervalID);
           }
-          this.__intervalID=setInterval(S.bind(this.__enterFrame, this), 1000/this._frameRate);
+          this.__intervalID=setInterval(_.bind(this.__enterFrame, this), 1000/this._frameRate);
        },
        __enterFrame : function(){
            var self = this;
@@ -321,12 +333,11 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
            //requestAnimationFrame( _.bind(self.__enterFrame,self) )
 
        },
-
        afterAddChild : function(stage){
            if(this.children.length==1){
-               this.el.append(stage.canvas);
+               this.el.append(stage.context2D.canvas);
            } else if(this.children.length>1) {
-               this.el[0].insertBefore(stage.canvas , this._hoverStage.canvas);
+               this.el[0].insertBefore(stage.context2D.canvas , this._hoverStage.context2D.canvas);
            }
        },
        afterDelChild : function(stage){
@@ -369,8 +380,8 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
                            convertLog  : []
                        }
                    }
-                   var s = self.convertStages[stage.id].convertShapes[shape.id];
-                   s.convertLog.push(name,value,preValue);
+                   var ss = self.convertStages[stage.id].convertShapes[shape.id];
+                   ss.convertLog.push(name,value,preValue);
                }
            }
 
@@ -391,6 +402,21 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
                        }
                    }
                }
+           }
+
+           if(!opt.convertType){
+               //无条件要求刷新
+               var stage = opt.stage;
+               if(!self.convertStages[stage.id]) {
+                   self.convertStages[stage.id]={
+                       stage : stage ,
+                       convertShapes : {
+
+                       }
+
+                   }
+               }
+
            }
 
 
@@ -414,10 +440,10 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Core,Sta
    requires : [
     "canvax/display/DisplayObjectContainer" ,
     "canvax/display/Stage", 
-    "canvax/core/Core",
+    "canvax/core/Base",
     "canvax/event/StageEvent",
     "canvax/core/propertyFactory",
-    "canvax/animation/animation",
-    (!document.createElement('canvas').getContext) ? "canvax/library/excanvas":""
+    "canvax/animation/animation"
+    //(!document.createElement('canvas').getContext) ? "canvax/library/excanvas":""
     ]
 });

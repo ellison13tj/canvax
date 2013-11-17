@@ -76,12 +76,12 @@
            packages:[
              {
                name : "canvax",
-               path : "../../../canvax"
+               path : "../../"
              }
              ,
              {
                name : "demo",
-               path : "../.."
+               path : "../../"
              }
            ]
        });
