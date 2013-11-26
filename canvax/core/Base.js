@@ -33,11 +33,12 @@ KISSY.add("canvax/core/Base" , function(S){
             newDom.style.position = 'absolute';
             newDom.style.width = _width + 'px';
             newDom.style.height = _height + 'px';
+            
             //newDom.setAttribute('width', _width );
             //newDom.setAttribute('height', _height );
+            
             newDom.setAttribute('width', _width * this._devicePixelRatio);
             newDom.setAttribute('height', _height * this._devicePixelRatio);
-
 
             newDom.setAttribute('id', id);
             return newDom;

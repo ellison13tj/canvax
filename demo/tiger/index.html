@@ -53,6 +53,7 @@
            var stage = new Stage({
                id : "tiger",
                context:{
+                 //scaleX:0.5, 
                  width : width,
                  height: height
                }
@@ -100,15 +101,13 @@
                        x:200,
                        y:200,
                        path :Data.path ,
-                    
+                       //scaleX:0.5,
+                       //scaleY:0.5,
                        lineWidth : Data.stroke-width,
                        fillStyle:Data.fill,
                        strokeStyle: Data.stroke=="none" ? null : Data.stroke
                    }
                });
-               
-                        
-
                stage.addChild(map); 
                });
             

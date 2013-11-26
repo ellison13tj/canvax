@@ -9,9 +9,7 @@ KISSY.add("canvax/display/Stage" , function( S , DisplayObjectContainer , Base,S
        //stage正在渲染中
        self.stageRending=false;
 
-
        self._isReady = false;
-
 
        arguments.callee.superclass.constructor.apply(this, arguments);
 
@@ -44,10 +42,8 @@ KISSY.add("canvax/display/Stage" , function( S , DisplayObjectContainer , Base,S
           //}
      
           //为retina屏幕做的优化
-
           self.context.scaleX = Base._devicePixelRatio;
           self.context.scaleY = Base._devicePixelRatio;
-
 
           self._isReady = true;
 
