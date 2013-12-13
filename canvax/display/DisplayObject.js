@@ -44,7 +44,7 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
 
         self._eventEnabled = false; //是否响应事件交互
 
-        self.dragEnabled = false;   //是否启用元素的拖拽
+        self.dragEnabled = true;//false;   //是否启用元素的拖拽
        
 
 
@@ -59,8 +59,8 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
 
         //提供给Coer.propertyFactory() 来 给 self.context 设置 propertys
         _contextATTRS = {
-            width         : opt.context.width         || null,
-            height        : opt.context.height        || null,
+            width         : opt.context.width         || 0,
+            height        : opt.context.height        || 0,
             x             : opt.context.x             || 0,
             y             : opt.context.y             || 0,
             alpha         : opt.context.alpha         || 1,
@@ -95,8 +95,8 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
             strokeStyle   :opt.context.strokeStyle    || null,
             globalAlpha   :opt.context.globalAlpha    || null,
             font          :opt.context.font           || null,
-            textAlign     :opt.context.textAlign      || null,
-            textBaseline  :opt.context.textBaseline   || null,
+            textAlign     :opt.context.textAlign      || "left",
+            textBaseline  :opt.context.textBaseline   || "top",
             arcScaleX_    :opt.context.arcScaleX_     || null,
             arcScaleY_    :opt.context.arcScaleY_     || null,
             lineScale_    :opt.context.lineScale_     || null   
@@ -174,11 +174,24 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
         init : function(){
             //TODO: 这个方法由各派生类自己实现
         },
-        clone:function(){
+        /* @myself 是否生成自己的镜像 
+         * 克隆又两种，一种是镜像，另外一种是绝对意义上面的新个体
+         * 默认为绝对意义上面的新个体，新对象id不能相同
+         * 镜像基本上是框架内部在实现  镜像的id相同 主要用来把自己画到另外的stage里面，比如
+         * mouseover和mouseout的时候调用*/
+        clone:function(myself){
             var newObj = _.clone(this);
             newObj.parent = null;
             newObj.stage  = null;
             //newObj.context= propertyFactory(this.context.$model);
+            if(!myself){
+              //新对象的id不能相同
+              newObj.id = Base.createId(newObj.type);
+              newObj._eventId = newObj.id;
+              newObj.context = propertyFactory(this.context.$model);
+              newObj.context.$owner = newObj;
+              newObj.context.$watch = this.context.$watch;
+            }
             return newObj;
         },
         heartBeat : function(opt){

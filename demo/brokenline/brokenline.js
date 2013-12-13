@@ -1,14 +1,14 @@
-KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection ,Canvax){
+KISSY.add("demo/brokenline/brokenline" , function( S , Base , Utils , Datasection ,Canvax){
     /*
      *@node chart在dom里的目标容器节点。
     */
-    var Histogram = function( node ){
-		Histogram.superclass.constructor.apply(this,[]);
+    var Brokenline = function( node ){
+		Brokenline.superclass.constructor.apply(this,[]);
 		this.init.apply(this , arguments);
     }
 
 
-    Histogram.ATTRS={
+    Brokenline.ATTRS={
         title : {
           value : "chart"
         },
@@ -52,26 +52,21 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
           }
         },
         barWidth:{
-          value : 8
-        },
-        barWidthMin : {
-          value : 8
-        },
-        barWidthMax : {
-          value : 16
+          value : 1
         },
         spaceWidth:{
-          value : 4
+          value : 5
         },
         spaceWidthMin:{
-          value :4
+          value : 5
         },
         xAxis:{
           value : {
             field : null,
             TextStyle:null,
-            dataOrg:[],//从histogram.data获得的xAxis 的 源数据，下面的data的数据从这里计算而来
+            dataOrg:[],//从brokenline.data获得的xAxis 的 源数据，下面的data的数据从这里计算而来
             data : [],
+            xPointList:[],
             layout : {
                left:0,
                top:0,
@@ -92,7 +87,7 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
             dataMode : 0, //1为换算成百分比
             fields : [],
             TextStyle:null,
-            dataOrg : [],//从histogram.data 得到的yAxisd的源数据
+            dataOrg : [],//从brokenline.data 得到的yAxisd的源数据
             data : [],
             layout: {//位置
                left:0,
@@ -133,7 +128,7 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
 
 
 
-    S.extend(Histogram , Base , {
+    S.extend(Brokenline , Base , {
 
         /*
          *私有属性，内部计算得到，无需用户配置，
@@ -166,12 +161,8 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
                }
            });
 
-          //self.set("svgElement" , document.createElement("div"));
           self.set("paper" , canvax);
           self.set("stage" , stage);
-
-          //先把整个画布偏移0.5个像素，已遍解决画图的0.5像素模糊问题
-          //self.get("paper").setViewBox(0.5 ,0.5 , self.get("width") , self.get("height") );
 
           //先探测出来单个英文字符和单个的中文字符所占的高宽
           self.set("oneStrSize" , Utils.probOneStrSize());
@@ -208,7 +199,7 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
               }
           }
 
-		  Histogram.superclass.constructor.apply(self,[obj]);
+		  Brokenline.superclass.constructor.apply(self,[obj]);
           //参数配置完毕
           
          
@@ -234,7 +225,6 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
         
       
         _drawEnd : function(){
-          //绘制完毕后，要把svgElement append to element
           var self = this;
           self.get("paper").addChild( self.get("stage") );
         },
@@ -257,6 +247,7 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
           var self = this;
           self._graphsDraw();
           self._yAxisDraw();
+          self._xAxisDraw();
         },
 
 
@@ -270,7 +261,7 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
           var fieldList = self.get("fieldList");
           if (!xAxis.field){
             //如果用户没有配置field字段，那么就默认索引1为xAxis的数据类型字段
-            xAxis.field = data[0][0]; 
+            xAxis.field = data[0][0];
           };
 
           xAxis.dataOrg.length = 0;
@@ -323,7 +314,8 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
           var xAxis = self.get("xAxis");
 
           //用yAxis.dataOrg的原始数据得到计算出实际在yAxis 上 要显示的数据
-          yAxis.data = Datasection.section( Utils.getChildsArr(yAxis.dataOrg) );
+          
+          yAxis.data = Datasection.section( Utils.getChildsArr(yAxis.dataOrg),5 );
 
           //计算data里面字符串最宽的值
           var max=0;
@@ -386,39 +378,27 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
           var spaceWidth = self.get("spaceWidth");
           var spaceWidthMin = self.get("spaceWidthMin");
           var barWidth = self.get("barWidth");
-          var barWidthMin = self.get("barWidthMin");
-          var barWidthMax = self.get("barWidthMax");
           var yAxis = self.get("yAxis");
           var xAxis = self.get("xAxis");
 
           var dl = data.length-1;//因为第一行是field，所以要 -1
 
-          var groupBarWidthMin = barWidthMin*yAxis.fields.length + spaceWidthMin*(yAxis.fields.length-1);
-          var groupBarWidthMax = barWidthMax*yAxis.fields.length + spaceWidthMin*(yAxis.fields.length-1);
+
 
           //数据需要截断的情况
           dataRange.start = 1;
-          if ( (groupBarWidthMin+spaceWidthMin)*dl > xAxis.layout.width ){
-             dataRange.to = parseInt( xAxis.layout.width / (groupBarWidthMin+spaceWidthMin));
+          if ( (1+spaceWidthMin)*dl > xAxis.layout.width ){
+             dataRange.to = parseInt( xAxis.layout.width / (1+spaceWidthMin));
           } else {
              dataRange.to = dl
           }
 
           //@gwidth 单个分组的bar+space的宽度 ，，，，，  重新计算barWidth spaceWidth
-          var gwidth = (xAxis.layout.width-self.get("oneStrSize").en.width) / (dataRange.to-dataRange.start+1);
+          var gwidth = (xAxis.layout.width-self.get("oneStrSize").en.width*3) / (dataRange.to-dataRange.start)+barWidth;
 
-          //如果使用barWidthMax，会导致spaceWidth <= spaceWidthMin,的话呢 ，我觉得还是应该用barWidthMin
-          if ( (gwidth - groupBarWidthMax ) > spaceWidthMin ){
-             barWidth = barWidthMax;
-          } else {
-             barWidth = barWidthMin;
-          }
-
-          //得到了barWidth后，spaceWidth就容易多了
-          spaceWidth = gwidth - ( barWidth*yAxis.fields.length+spaceWidthMin*(yAxis.fields.length-1) );
-          
+ 
+          spaceWidth = gwidth - barWidth;         
           self.set("spaceWidth" , spaceWidth);
-          self.set("barWidth" , barWidth);
           self.set("dataRange" , dataRange);
          
 
@@ -436,15 +416,34 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
           var yAxis = self.get("yAxis");
           var xAxis = self.get("xAxis");
           var barWidth = self.get("barWidth");
-          var spaceWidth = self.get("spaceWidth");
           var spaceWidthMin = self.get("spaceWidthMin");
+          var spaceWidth = self.get("spaceWidth");
           var graphs = self.get("graphs");
           
+          //画背景虚线
+          self._yBlock = parseInt(graphs.layout.height / (yAxis.data.length-1));
 
+          //v方向均分后还多余的部分px
+          self._yOverDiff = graphs.layout.height-self._yBlock*(yAxis.data.length-1);
+              
+          for ( var i=0,l=yAxis.data.length-1 ; i<l ; i++ ){
+             var linex = graphs.layout.left-6;
+             var liney = Math.round( i*self._yBlock )+graphs.layout.top+graphs.layout.padding.top+self._yOverDiff; 
+             self.get("stage").addChild(new Canvax.Shapes.Line({
+                 context : {
+                     xStart      : linex,
+                     yStart      : liney,
+                     xEnd        : linex+graphs.layout.width,
+                     yEnd        : liney,
+                     lineType    : "dashed",
+                     lineWidth   : 1,
+                     strokeStyle : graphs.lineColor
+                 }
+             }));
+
+          };
 
           //画左边线
-          //var lineVStr = "M"+graphs.layout.left+" "+(graphs.layout.top)+"v"+(graphs.layout.height+graphs.layout.padding.top)+"Z";
-          //paper.path( lineVStr ).attr({stroke:graphs.lineColor});
           self.get("stage").addChild(new Canvax.Shapes.Line({
               id : "line-left",
               context : {
@@ -460,9 +459,6 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
 
 
           //画下边线
-          //var lineHStr = "M"+xAxis.layout.left +" "+xAxis.layout.top+"h"+xAxis.layout.width+"Z";
-          //paper.path( lineHStr ).attr({stroke:graphs.lineColor});
-
           self.get("stage").addChild(new Canvax.Shapes.Line({
               id : "line-bottom",
               context : {
@@ -476,33 +472,6 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
               }
           }));
 
-
-          //画背景虚线
-          self._yBlock = parseInt(graphs.layout.height / (yAxis.data.length-1));
-
-          //v方向均分后还多余的部分px
-          self._yOverDiff = graphs.layout.height-self._yBlock*(yAxis.data.length-1);
-              
-          for ( var i=0,l=yAxis.data.length-1 ; i<l ; i++ ){
-             var linex = graphs.layout.left;
-             var liney = Math.round( i*self._yBlock )+graphs.layout.top+graphs.layout.padding.top+self._yOverDiff; 
-             //var lineBG = "M"+linex+" "+liney+"h"+graphs.layout.width;
-             //paper.path(lineBG).attr({stroke:graphs.lineColor , "stroke-dasharray":"- "});
-             self.get("stage").addChild(new Canvax.Shapes.Line({
-                 id : "line-bottom",
-                 context : {
-                     xStart      : linex,
-                     yStart      : liney,
-                     xEnd        : linex+graphs.layout.width,
-                     yEnd        : liney,
-                     lineType    : "dashed",
-                     lineWidth   : 1,
-                     strokeStyle : graphs.lineColor
-                 }
-             }));
-
-          };
-
           var dataRange=self.get("dataRange");
           var maxY = 0;//yAxis方向最大值
           var minY = 0;//yAxis方向最小
@@ -513,80 +482,124 @@ KISSY.add("demo/histogram/histogram" , function( S , Base , Utils , Datasection 
           } );
 
           //一条数据分组占据的width
-          var groupWidth = barWidth*yAxis.fields.length + spaceWidthMin*(yAxis.fields.length-1);
+          var groupWidth = barWidth+spaceWidth;
 
           //遍历，把所有的数据用cloumn画出来
-          for (var d=dataRange.start;d<=dataRange.to ; d++){
-              S.each( yAxis.fields , function(field , fi){
+
+          S.each( yAxis.fields , function(field , fi){
+              var pointList = [];
+
+              for (var d=dataRange.start;d<=dataRange.to ; d++){
                   var groupI = d - dataRange.start; 
-                  var x = Math.round(groupI*(spaceWidth+groupWidth)+(spaceWidthMin+barWidth)*fi+ spaceWidth) + graphs.layout.left ;
-                  //整个cloumns要往左移动半个SpaceWidth
-                  x -= parseInt(spaceWidth/2);
-                  
-                  
+                  var x = Math.round(groupI*(groupWidth)) + graphs.layout.left + self.get("oneStrSize").en.width ;
 
                   var y = graphs.layout.top+graphs.layout.padding.top+graphs.layout.height;
                   var itemHeight = (graphs.layout.height-self._yOverDiff) * ( data[d][ fieldList[field].index ] / (maxY-minY) );
                   itemHeight = Math.round(itemHeight);
-                  
-                  //var cloumn = paper.rect( x+0.5 , y-itemHeight-0.5 , barWidth , itemHeight+0.5  );
-                  var rect = new Canvax.Shapes.Rect({
-                      context : {
-                        x     : x,
-                        y     : y-itemHeight,
-                        width : barWidth,
-                        height: itemHeight,
-                        fillStyle:graphs.barColor[fi]
-                      }
-                  });
-                  rect.hover(function(){
-                     this.context.strokeStyle = "red";
-                     this.context.lineWidth = 1;
-                  },function(){
-                     this.context.lineWidth = 0;
-                     this.context.strokeStyle = null;
 
+                  pointList.push( [x , y-itemHeight] );
+              };
+
+              
+              //计算xAxis的xPointList
+              if(xAxis.xPointList.length==0){
+                  S.each(pointList,function(p){
+                     //TODO:这里目前只做简单的push，如果节点过多的话，还要
+                     xAxis.xPointList.push(p[0]);
                   })
-                  self.get("stage").addChild(rect);
+              }
 
-                 // cloumn.attr({fill:graphs.barColor[fi],'stroke-width':"0"})
+              self.BrokenLine = new Canvax.Shapes.BrokenLine({
+                  context : {
+                      pointList : pointList,
+                      strokeStyle : 'red',
+                      lineWidth : 1
+                  }
+              });
 
-              } )
-          }
-            
+              self.get("stage").addChild(self.BrokenLine);
 
+          });
         },
         _yAxisDraw : function(){
           var self = this;
           var yAxis = self.get("yAxis");
           var paper = self.get("paper");
           var graphs = self.get("graphs");
+          var stage  = self.get("stage")
           S.each(yAxis.data , function( item , i ){
              var x = yAxis.layout.left+yAxis.layout.width;
-             var y = yAxis.layout.height+yAxis.layout.top+yAxis.layout.padding.top - i*self._yBlock;
+             var y = yAxis.layout.height+yAxis.layout.top+yAxis.layout.padding.top-i*self._yBlock;
               
-             setTimeout(function(){
-               //paper.text( x , y , Utils.numAddSymbol(item) ).attr({'text-anchor':'end','font-size':'12'});
-             });
+             
+             stage.addChild(new Canvax.Display.Text(
+                item
+                ,
+                {
+                  context : {
+                      x  : x,
+                      y  : y,
+                      fillStyle:"blank",
+                      textAlign:"right",
+                      textBaseline:"middle"
+                  }
+                })
+             );
 
-             //paper.rect( graphs.layout.left-7-0.5 , y-2+0.5 , 7,3).attr({"stroke-width":"0",fill:graphs.lineColor});
+
+          })
+        },
+        _xAxisDraw : function(){
+          var self = this;
+          var xAxis = self.get("xAxis");
+          var paper = self.get("paper");
+          var graphs= self.get("graphs");
+          var stage = self.get("stage");
+
+          var pCount = xAxis.xPointList.length;
+          S.each(xAxis.xPointList , function( x , i ){
+              stage.addChild(new Canvax.Shapes.Line({
+                  context : {
+                      xStart      : x,
+                      yStart      : xAxis.layout.top-5,
+                      xEnd        : x,
+                      yEnd        : xAxis.layout.top,
+                      lineWidth   : 1,
+                      strokeStyle : graphs.lineColor
+                  }
+              }));
+
+              var textOpt = {
+                  x   : x,
+                  y   : xAxis.layout.top,
+                  fillStyle:"blank",
+                  //textBackgroundColor:"red"
+                  //textBaseline:"middle"
+              }
+
+              if(i>0){
+                  textOpt.textAlign="center";
+                  if(i == (pCount-1)){
+                      textOpt.textAlign="right";
+                  }
+              } 
+
+              stage.addChild(new Canvax.Display.Text(
+                xAxis.dataOrg[i].toString()
+                ,
+                {
+                  context : textOpt
+                })
+              );
           })
         }
     }); 
-
-
-
-
-
-
-    return Histogram;
-
-
+    return Brokenline;
 } , {
     requires: [
         'base' ,
-        'demo/histogram/utils' ,
-        'demo/histogram/datasection',
+        'demo/brokenline/utils' ,
+        'demo/brokenline/datasection',
         'canvax/'
     ]
 })

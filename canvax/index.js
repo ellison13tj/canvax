@@ -12,7 +12,8 @@
  **/
 
 
-KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Base,StageEvent, propertyFactory ){
+KISSY.add("canvax/index" ,
+   function( S ,DisplayObjectContainer ,Stage, Base,StageEvent, propertyFactory,Sprite,Text,Shape,Shapes ){
    var Canvax=function(opt){
        var self = this;
        self.type = "canvax";
@@ -121,11 +122,15 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Base,Sta
        */
        createPixelContext : function() {
            var self = this;
-           var _pixelCanvas = Base._createCanvas("_pixelCanvas",self.context.width,self.context.height);
-           document.body.appendChild( _pixelCanvas );
+           var _pixelCanvas=Base._createCanvas("_pixelCanvas",self.context.width,self.context.height);
            if(typeof FlashCanvas != "undefined" && FlashCanvas.initElement){
                FlashCanvas.initElement( _pixelCanvas );
            }
+
+           document.body.appendChild( _pixelCanvas );
+
+           _pixelCanvas.style.display = "none";
+
            self._pixelCtx = _pixelCanvas.getContext('2d');
 
        },
@@ -428,6 +433,16 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Base,Sta
 
    Canvax.propertyFactory = propertyFactory;
 
+   //给Canvax 添加静态对象，指向stage ,shape,text,sprite等类
+   Canvax.Display ={
+      Stage  : Stage,
+      Sprite : Sprite,
+      Text   : Text,
+      Shape  : Shape
+   }
+   //所有自定义shape的集合，可以直接再这个上面获取不必强制引入use('canvax/shape/Circle')这样
+   Canvax.Shapes = Shapes;
+
    return Canvax;
 } , {
    requires : [
@@ -436,6 +451,14 @@ KISSY.add("canvax/Canvax" , function( S ,DisplayObjectContainer ,Stage, Base,Sta
     "canvax/core/Base",
     "canvax/event/StageEvent",
     "canvax/core/propertyFactory",
+    
+    "canvax/display/Sprite",
+    //"canvax/display/Stage",
+    "canvax/display/Text",
+    "canvax/display/Shape",
+
+    "canvax/shape/Shapes", //所有自定义shape的集合
+
     "canvax/animation/animation"
     ]
 });
