@@ -1,3 +1,10 @@
+/**
+ * Canvax
+ *
+ * @author 释剑 (李涛, litao.lt@alibaba-inc.com)
+ */
+
+
 KISSY.add("canvax/core/Base" , function(S){
 
 
@@ -19,6 +26,8 @@ KISSY.add("canvax/core/Base" , function(S){
 
 
     var Base = {
+        mainFrameRate   : 40,//默认主帧率
+        now : 0,
         __emptyFunc : function(){},
         //retina 屏幕优化
         _devicePixelRatio : window.devicePixelRatio || 1,
@@ -33,11 +42,12 @@ KISSY.add("canvax/core/Base" , function(S){
             newDom.style.position = 'absolute';
             newDom.style.width = _width + 'px';
             newDom.style.height = _height + 'px';
+            
             //newDom.setAttribute('width', _width );
             //newDom.setAttribute('height', _height );
+            
             newDom.setAttribute('width', _width * this._devicePixelRatio);
             newDom.setAttribute('height', _height * this._devicePixelRatio);
-
 
             newDom.setAttribute('id', id);
             return newDom;

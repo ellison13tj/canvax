@@ -13,11 +13,7 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
         arguments.callee.superclass.constructor.apply(this, arguments);
         var self = this;
 
-
-
         //设置默认属性
-
-
         
         self.id = opt.id || null;
 
@@ -28,6 +24,9 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
         //就要对应的修改新为的矩阵
         //怎么修改呢。self._transformStage=null就好了
         self._transformStage = null;
+
+
+
         self._eventId = null;
 
 
@@ -425,6 +424,10 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
             return _transform;
         },
 
+        getRect:function(style){
+            return style
+        },
+
         //显示对象的选取检测处理函数
         hitTestPoint : function( mouseX , mouseY){
             var result; //检测的结果
@@ -509,7 +512,7 @@ KISSY.add("canvax/display/DisplayObject" , function(S , EventDispatcher , Matrix
                this.parent.removeChild(this);
             } else {
                this = null;
-            } 
+            }
         },
         toString : function(){
             var result;

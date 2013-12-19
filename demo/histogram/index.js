@@ -75,11 +75,14 @@
            //base : "./",
            packages:[
              {
+<<<<<<< HEAD
                name : "canvax",
                path : "../../"
              }
              ,
              {
+=======
+>>>>>>> master
                name : "demo",
                path : "../../"
              }
