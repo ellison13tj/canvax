@@ -57,9 +57,10 @@
                    }
                },
                yAxis : {
-                   fields : ["val2","val3","val4"],
+                   fields : ["val2"],
                    dataMode:0
-               }
+               },
+               type  : "price"
 
            }
 
