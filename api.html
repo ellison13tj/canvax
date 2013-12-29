@@ -554,6 +554,13 @@ base_url: "../"
          </tr>
         </thead>
         <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "Shape"
+           </td>
+         </tr>
+
          <tr>
            <td>draw</td>
            <td>
@@ -631,6 +638,13 @@ base_url: "../"
          </tr>
         </thead>
         <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "Stage"
+           </td>
+         </tr>
+
          <tr>
            <td>context2D</td>
            <td>
@@ -665,6 +679,13 @@ base_url: "../"
          </tr>
         </thead>
         <tbody>
+         <tr>
+           <td>type</td>
+           <td>
+               "canvax"
+           </td>
+         </tr>
+
          <tr>
            <td>el</td>
            <td>
@@ -763,6 +784,28 @@ base_url: "../"
     </div>
     </p>
 
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "text"
+           </td>
+        </tr>
+       </tbody>
+      </table>
+    </div>
+
+
     <h5>Context-Propertys</h5>
     
     <div class="table-responsive">
@@ -854,6 +897,13 @@ base_url: "../"
         </thead>
         <tbody>
          <tr>
+           <td>type</td>
+           <td>
+              "bitmap"
+           </td>
+         </tr>
+
+         <tr>
            <td>img</td>
            <td>
                bitmap的图片来源，可以是页面上面的img 也可以是某个canvas，但是一定要是已经加载完毕的状态才能用的哦，否则有什么后果自负啊。
@@ -912,9 +962,9 @@ base_url: "../"
     <h3 id="Movieclip">Movieclip</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
-        <h4>Bitmap类</h4>
+        <h4>Movieclip类</h4>
         <p>
-        继承自Shape。
+        继承自DisplayObjectContainer。目前已经实现跳到指定帧 （开始，停止），么个movieclip可以设置不同的帧率 ， 静止状态可以跳转 上一帧 和下一帧。
         </p>
 
     </div>
@@ -932,9 +982,16 @@ base_url: "../"
         </thead>
         <tbody>
          <tr>
-           <td>img</td>
+           <td>type</td>
            <td>
-               bitmap的图片来源，可以是页面上面的img 也可以是某个canvas，但是一定要是已经加载完毕的状态才能用的哦，否则有什么后果自负啊。
+               "movieclip"
+           </td>
+         </tr>
+
+         <tr>
+           <td>currentFrame</td>
+           <td>
+               movieclip显示的当前帧。
            </td>
          </tr>
         </tbody>
