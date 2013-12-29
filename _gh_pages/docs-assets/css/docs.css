@@ -1195,3 +1195,12 @@ h1[id] {
   margin-top: 15px;
   margin-bottom: 5px;
 }
+
+iframe {
+  border:none;
+}
+
+.highlight {
+  max-height:450px;
+  overflow:auto;
+}

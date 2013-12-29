@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1, maximum-scale=1" />
+<title>Canvax</title>
+
+<style type="text/css">
+    body{margin:0;padding:0}
+    //canvas {background:#999}
+</style>
+
+<script type="text/javascript" src="http://g.tbcdn.cn/kissy/k/1.3.1/seed-min.js"></script>
+<script type="text/javascript" src="../../library/underscore.js"></script>
+<script type="text/javascript" src="../../library/flashCanvas/flashcanvas.js"></script>
+<script type="text/javascript" src="../../build/index.js"></script>
+</head>
+
+<body>
+    <div id="ready"></div>
+   <script>
+   KISSY.ready(function(){
+       KISSY.config({
+           debug:true,
+           //base : "./",
+           packages:[
+             {
+               name : "library",
+               path : "../../../"
+             }
+           ]
+       });
+
+       var colorInd=0;
+       window.stage=null;
+       KISSY.use("canvax/ ,library/color , node" , function( S ,Canvax, color ){
+
+           //在dom树中准备一个具备Layout的容器节点
+           var el = S.one("#canvasTest") , width = el.width() , height = el.height();
+
+           //用这个具备Layout的节点来创建Canvax项目对象
+           canvax = new Canvax({
+               id : "canvax", //注意，Canvax的世界里面，所有的id都是可选的，但是不能重复。
+               el : el
+           });
+
+           //然后就是创建第一个舞台对象Stage,在canvax的世界里，一个Stage就对应着一个canvas
+           stage = new Canvax.Display.Stage({
+               id : "chart",//可选，不传入id设置，系统会自动生成一个随机的唯一id
+               context:{
+                   width : width, //这个时候就要把前面获取到的width给到stage，stage好知道你要个多大的canvas
+                   height: height
+               }
+           });
+
+           //ok，然后把stage添加到Canvax中管理。然后在stage中添加具体的图形元素
+           canvax.addChild(stage);
+
+           //好吧，我们来创建一个圆形，然后添加到stage中，然后给这个圆形添加点事件看看
+           var circle = new Canvax.Display.Shape({
+               context : {
+                   x:55,
+                   y:55, 
+                   r : 50,
+                   fillStyle   : 'rgba(220, 20, 60, 0.8)',// rgba supported
+                   strokeStyle : "#e0173f",
+                   lineWidth   : 2
+               },
+               type:'shape',
+               draw   : function(ctx , context){
+                   ctx.arc(0,0,context.r,0,Math.PI*2,true); 
+               }
+           });
+         
+           //ok然后把这个画好了的圆，添加到舞台中去
+           stage.addChild(circle);
+
+
+       })
+   }) 
+   </script>
+   <div id="canvasTest" style='width:150px;height:150px;'></div>
+</body>
+</html>

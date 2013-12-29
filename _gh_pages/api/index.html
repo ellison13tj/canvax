@@ -174,12 +174,525 @@
     如果你已经准备好了上面说的准备工作，ok，我们可以开始来创建我们的canvax项目了。
     </p>
 
-
+    <p>
+    首页你要引入Canvax模块，比如在kissy中是这样的。
+    <div class="highlight"><pre><code class="js">    <span class="nx">KISSY</span><span class="p">.</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">KISSY</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;canvax/&quot;</span> <span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Canvax</span><span class="p">){</span>
+       <span class="c1">//ok这里你已经拿到了Canvax 框架模块，后续的demo中。都默认你已经拿到了Canvax</span>
+      <span class="p">})</span>
+    <span class="p">});</span>
     
+</code></pre></div>
 
+    ok，我们来从做一个很简单的demo开始。
+
+    <div class="highlight"><pre><code class="js">    <span class="c1">//在dom树中准备一个具备Layout的容器节点</span>
+    <span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">S</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s2">&quot;#canvasTest&quot;</span><span class="p">)</span> <span class="p">,</span> <span class="nx">width</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="p">,</span> <span class="nx">height</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">height</span><span class="p">();</span>
+
+    <span class="c1">//用这个具备Layout的节点来创建Canvax项目对象</span>
+    <span class="nx">canvax</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Canvax</span><span class="p">({</span>
+      <span class="nx">id</span> <span class="o">:</span> <span class="s2">&quot;canvax&quot;</span><span class="p">,</span> <span class="c1">//注意，Canvax的世界里面，所有的id都是可选的，但是不能重复。</span>
+      <span class="nx">el</span> <span class="o">:</span> <span class="nx">el</span> 
+    <span class="p">});</span>
+
+    <span class="c1">//然后就是创建第一个舞台对象Stage,在canvax的世界里，一个Stage就对应着一个canvas</span>
+    <span class="nx">stage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Canvax</span><span class="p">.</span><span class="nx">Display</span><span class="p">.</span><span class="nx">Stage</span><span class="p">({</span>
+      <span class="nx">id</span> <span class="o">:</span> <span class="s2">&quot;chart&quot;</span><span class="p">,</span><span class="c1">//可选，不传入id设置，系统会自动生成一个随机的唯一id</span>
+      <span class="nx">context</span><span class="o">:</span><span class="p">{</span>
+        <span class="nx">width</span> <span class="o">:</span> <span class="nx">width</span><span class="p">,</span> <span class="c1">//这个时候就要把前面获取到的width给到stage，stage好知道你要个多大的canvas</span>
+        <span class="nx">height</span><span class="o">:</span> <span class="nx">height</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="c1">//ok，然后把stage添加到Canvax中管理。然后在stage中添加具体的图形元素</span>
+    <span class="nx">canvax</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">stage</span><span class="p">);</span>
+
+    <span class="c1">//好吧，我们来创建一个圆形，然后添加到stage中，然后给这个圆形添加点事件看看</span>
+    <span class="kd">var</span> <span class="nx">circle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Canvax</span><span class="p">.</span><span class="nx">Shapes</span><span class="p">.</span><span class="nx">Circle</span><span class="p">({</span>
+      <span class="nx">context</span> <span class="o">:</span> <span class="p">{</span>
+        <span class="nx">x</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="nx">y</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="nx">r</span> <span class="o">:</span> <span class="mi">50</span><span class="p">,</span>
+        <span class="nx">fillStyle</span>   <span class="o">:</span> <span class="s1">&#39;rgba(220, 20, 60, 0.8)&#39;</span><span class="p">,</span>          <span class="c1">// rgba supported</span>
+        <span class="nx">strokeStyle</span> <span class="o">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+        <span class="nx">lineWidth</span>   <span class="o">:</span> <span class="mi">2</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="nx">circle</span><span class="p">.</span><span class="nx">hover</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="p">},</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="c1">//ok然后把这个画好了的圆，添加到舞台中去</span>
+    <span class="nx">stage</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">circle</span><span class="p">);</span>
+    
+</code></pre></div>
+    </p>
+
+    <p>
+    详见DEMO如下，也可以<a target="_blank" href="../demo/shapes/circle.html">查看demo独立页面</a></br>
+    <iframe src="../demo/shapes/circle.html" width="150" height="150"></iframe>
+    <br />你可以把鼠标移动到圆形上面，然后拖动这个圆
+    </p>
+    
+    ok，到这里，我们使用canvax完成了第一个简单的图形项目开发。是不是很简单！<br />
+<br />
+没错，被你发现了，这简直和flash开发中的as3的使用一模一样啊，是的，Canvax的对象抽象上面采用了as的<code>DisplayList</code>，as3在web图形开发方面耕耘了多年，为web富媒体的发展乃至webgame的发展做出了不可磨灭的贡献，向as3致敬。<br /><br />
+
+    那么下面就来介绍下基于<code>DisplayList</code>对象树设计的Canvax的api，如果你熟悉或者了解过as3，如果你是刚好从as3开发转向html5-canvas开发的话，亲，没错，<code>Canvax</code>就是你的菜，如果你不熟悉as3，也没关系的亲，其实这一切，一点都不难。
+</div>
+
+<!--api begin-->
+
+
+<div class="bs-docs-section">
+    <div class="page-header">
+        <h1 id="displayList">DisplayList</h1>
+    </div>
+
+    <h3 id="DisplayObject">DisplayObject</h3>
+
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>所有显示对象的基类</h4>
+        <p>
+        在Canvax的世界里，<code>DisplayObject</code>是现有显示对象的基类，在这个类里面，定义了每个显示对象的基本属性，比如id , parent , stage , dragEnabled , context等,其中最重要的<code>context</code>中，包含了所有的fillStyle，strokeStyle等canvas context2D 提供的绘图属性外，还包含了这个显示对象的width , height , x , y visible ... 等基础属性。
+        </p>
+    </div>
+    </p>
+
+    <h5>Propertys</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>id</td>
+           <td>可选，未设置的话系统会自动生成一个随机唯一的值，Canvax的世界里，同一个Stage下面的ID不能重复</td>
+         </tr>  
+         <tr>
+           <td><a href="#context">context</a></td>
+           <td>元素的绘图context，包含了所有canvas 的 context2D提供的绘图属性外，还包含了一些列width , height , x , y 等作为一个displayList要具备的属性，以及shape中自定义的属性，比如Circle 图形中自定义的r（半径），最重要的是，context中的每个属性都是经过<code>defineProperties</code>定义过的get , set 的属性包，所以当你重新设置一个Circle的半径从100改为50的时候，你只需要circle.context.r = 50; ok，Canvax就会自动把你最新的圆绘制出来， 你不需要去做其他额外的操作，是不是很cool！我也这么觉得</td>
+       </tr>
+       
+       <tr>
+           <td>dragEnabled</td>
+           <td>是否启动元素的拖拽,默认为false</td>
+       </tr> 
+
+        </tbody>
+      </table>
+    </div>
+
+
+
+    <p id='context'>
+    context具体由三部分组成，canvas context2D 提供的属性(<a href="http://www.w3.org/TR/2dcontext/" target="_blank">请自查阅W3的文档</a>)， 做为displayObjcet的属性，每个子类自定义的属性，这里只列DisplayObject的属性，具体的子类自定义属性会在子类的api中说明。
+    </p>
+    <p>
+    做为displayObject的属性：
+    <div class="table-responsive" >
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>width</td>
+           <td>元素的宽，默认为0</td>
+         </tr>  
+         <tr>
+           <td>height</td>
+           <td>元素的高，默认为0</td>
+         </tr>  
+         <tr>
+           <td>x</td>
+           <td>元素相对parent的坐标x，默认为0</td>
+         </tr>   
+         <tr>
+           <td>y</td>
+           <td>元素相对parent的坐标y，默认为0</td>
+         </tr>  
+         <tr>
+           <td>alpha</td>
+           <td>元素透明度，默认为1</td>
+         </tr>   
+         <tr>
+           <td>scaleX</td>
+           <td>元素x轴方向的缩放，默认为1</td>
+         </tr>   
+         <tr>
+           <td>scaleY</td>
+           <td>元素相对Y轴方向的缩放，默认为1</td>
+         </tr>   
+         <tr>
+           <td>scaleOrigin</td>
+           <td>值为一个point，缩放的原点，默认为{x:0,y:0}</td>
+         </tr>   
+         <tr>
+           <td>rotation</td>
+           <td>旋转的角度，默认为0，支撑正反方向的旋转，大于0为顺时针的旋转，小于0为逆时针方向的旋转</td>
+         </tr>   
+         <tr>
+           <td>rotateOrigin</td>
+           <td>值为一个point，元素旋转的原点坐标，默认为{x:0,y:0}</td>
+         </tr>   
+         <tr>
+           <td>visible</td>
+           <td>元素是否可见，默认为true，false的话则Canvax绘制引擎会忽略该元素不绘制到舞台</td>
+         </tr>   
+         <tr>
+           <td>cursor</td>
+           <td>鼠标移动到元素上面的鼠标形状，默认为"default"</td>
+         </tr>    
+
+
+        </tbody>
+      </table>
+    </div>
+    </p>
+
+    <h5>Methods</h5>
+    <p>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 150px;">Method</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>clone</td>
+                    <td>
+                        克隆自己，return一个新对象。
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>getCurrentWidth</td>
+                    <td>
+                        获取元素当前的宽度
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>getCurrentHeight</td>
+                    <td>
+                        获取元素当前的高度
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>getStage</td>
+                    <td>
+                        获取元素所在的舞台，stage自身的getStage()返回为null，如果该元素的getStage()返回为false，则说明该对象还未被添加到DisplayList中来。
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>localToGlobal</td>
+                    <td>
+                        <dl>
+                            <dt>参数：</dt>
+                            <dd>x：相对parent的x值</dd>
+                            <dd>y：相对parent的y值</dd>
+                        </dl>
+
+                        <dl>
+                            <dt>返回：@point</dt>
+                            <dd>{x:x , y:y }，返回元素对应的在相对左上交根坐标系统的坐标点</dd>
+                        </dl>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>globalToLocal</td>
+                    <td>
+                        <dl>
+                            <dt>参数：</dt>
+                            <dd>x：相对根坐标原点的x值</dd>
+                            <dd>y：相对根坐标原点的y值</dd>
+                        </dl>
+
+                        <dl>
+                            <dt>返回：@point</dt>
+                            <dd>{x:x , y:y }，返回元素对应的parent坐标系统中的坐标点</dd>
+                        </dl>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>setEventEnable</td>
+                    <td>
+                        <dl>
+                            <dt>参数：</dt>
+                            <dd>@bool，bool值</dd>
+                        </dl>
+
+                        <dl>
+                            <dt>返回：bool</dt>
+                            <dd>@bool，是否设置成功</dd>
+                        </dl>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>getIndex</td>
+                    <td>
+                        <dl>
+                            <dt>参数：无</dt>
+                        </dl>
+
+                        <dl>
+                            <dt>返回：Number</dt>
+                            <dd>返回在parent的children队列中的索引值，类似dom中的z-index</dd>
+                        </dl>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>toBack</td>
+                    <td>
+                        <dl>
+                            <dt>参数：可选 @index</dt>
+                            <dd>元素在z轴方向向下移动的层级数量，元素在z轴方向向下移动,不设置参数默认移动到最低层，</dd>
+                        </dl>
+                   </td>
+                </tr>
+
+                <tr>
+                    <td>toBack</td>
+                    <td>
+                        <dl>
+                            <dt>参数：可选 @index</dt>
+                            <dd>元素在z轴方向向上移动的层级数量，元素在z轴方向向下移动,不设置参数默认移动到最顶层，</dd>
+                        </dl>
+                   </td>
+               </tr>
+
+                <tr>
+                    <td>destroy</td>
+                    <td>
+                        <dl>
+                            <dt>参数：无</dt>
+                            <dd>元素的自我销毁。</dd>
+                        </dl>
+                   </td>
+               </tr>
+
+            </tbody>
+        </table>
+    </div>
+    </p>
+</div>
+
+
+<div class="bs-docs-section">
+    <h3 id="DisplayObjectContainer">DisplayObjectContainer</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>所有显示对象容器的基类</h4>
+        <p>
+           DisplayObjectContainer，首先它也是个DisplayObject,所以他继承自DispalyObject类，拥有作为一个displayObjec的一切属性和方法。然后它又作为一个容易，在这个类里面定义了有一份childs 的 列表 和来维护这份列表的一系列方法。
+        </p>
+
+    </div>
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>children</td>
+           <td>子元素列表，这是DisplayObjectContainer作为一个容器的具体的表现，也是它定义的唯一的属性， </td>
+         </tr>  
+        </tbody>
+      </table>
+    </div>
+
+    <h5>Methods</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>addChild</td>
+           <td>
+              <dl>
+                <dt>参数：@child</dt>
+                <dd>把@child添加到元素children的末尾</dd>
+              </dl>
+           </td>
+         </tr>  
+         <tr>
+           <td>addChildAt</td>
+           <td>
+              <dl>
+                <dt>参数：@child , @index</dt>
+                <dd>把@child添加到元素children的@index 索引位置</dd>
+              </dl>
+           </td>
+         </tr>  
+
+         <tr>
+           <td>removeChild</td>
+           <td>
+              <dl>
+                <dt>参数：@child </dt>
+                <dd>把@child从元素children中删除</dd>
+              </dl>
+           </td>
+         </tr>  
+
+         <tr>
+           <td>removeChildAt</td>
+           <td>
+              <dl>
+                <dt>参数：@index </dt>
+                <dd>把@index 索引位置的子元素从元素children中删除</dd>
+              </dl>
+           </td>
+         </tr>  
+         <tr>
+           <td>removeChildById</td>
+           <td>
+              <dl>
+                <dt>参数：@id </dt>
+                <dd>把id==@id 的子元素从元素children中删除</dd>
+              </dl>
+           </td>
+         </tr>  
+         <tr>
+           <td>removeAllChildren</td>
+           <td>
+              <dl>
+                <dt>参数：无 </dt>
+                <dd>删除元素children中的所有子元素</dd>
+              </dl>
+           </td>
+         </tr>  
+         <tr>
+           <td>getChildById</td>
+           <td>
+              <dl>
+                <dt>参数：@id </dt>
+                <dd>查找元素的children中id==@id 的子元素，目前不支撑遍历整个子元素节点树。只支持在当前子元素列表中查找</dd>
+              </dl>
+           </td>
+         </tr>  
+
+         <tr>
+           <td>getChildAt</td>
+           <td>
+              <dl>
+                <dt>参数：@index </dt>
+                <dd>查找元素的@index索引位置的 的子元素</dd>
+              </dl>
+           </td>
+         </tr>  
+
+         <tr>
+           <td>getChildIndex</td>
+           <td>
+              <dl>
+                <dt>参数：@child 子元素 </dt>
+                <dd>查找子元素@child在children队列中的索引值</dd>
+              </dl>
+           </td>
+       </tr>  
+       
+         <tr>
+           <td>contains</td>
+           <td>
+              <dl>
+                <dt>参数：@child 子元素 </dt>
+                <dd>判断元素是否有包含@child子元素</dd>
+              </dl>
+           </td>
+         </tr>  
+       
+         <tr>
+           <td>getNumChildren</td>
+           <td>
+              <dl>
+                <dt>参数：无 </dt>
+                <dd>查询元素的子元素数量，同样目前不支持遍历查找，只查找当前children的length</dd>
+              </dl>
+           </td>
+         </tr>  
+
+        </tbody>
+      </table>
+    </div>
 
 </div>
- 
+
+<div class="bs-docs-section">
+    <h3 id="Shape">Shape</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>Shape图形元素类</h4>
+        <p>
+        基础自DisplayObject ，本身不提供具体的绘图实现，提供一个<code>draw</code>方法给具体的绘图子类继承实现，比如圆形累，继承Shape后在圆形类Circle中提供具体的draw方法的实现，目前Canvax系统提供的派生自Shape类的自定义图形有Circle,Ellipse,Rect......等，具体的可以在<a href="#shapes">shapes</a>中查阅。我们也可以在开发中自己继承shape类后自己来实现draw方法，绘制自己想要的任何图形.
+        </p>
+
+    </div>
+    </p>
+
+     <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>draw</td>
+           <td>
+               <dl>
+                <dt>参数：@context2D , @context </dt>
+                <dd>
+                @context2D：这个是stage的真正的context2D实例<br />
+                @context  ：obj的所有的<a href="#context">context</a>属性配置
+                </dd>
+              </dl>
+           </td>
+         </tr>  
+        </tbody>
+      </table>
+    </div>
+
+</div>
+
 
         </div>
       </div>
