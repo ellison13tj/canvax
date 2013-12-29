@@ -79,9 +79,48 @@
    <a href="#about">关于(About Canvax)</a>
    <ul class="nav">
        <li><a href="#about-how">Canvax是什么</a></li>
-       <li><a href="#about-cando">Canvax能做什么</a></li>
+       <li><a href="#about-cando">如何使用Canvax</a></li>
+       <li><a href="#creat-canvax">如何创建Canvax项目</a></li>
+
    </ul>
 </li>
+
+
+<li class='displayList'>
+   <a href="#displayList">DisplayList</a>
+   <ul class="nav">
+       <li><a href="#DisplayObject">DisplayObject</a></li>
+       <li><a href="#DisplayObjectContainer">DisplayObjectContainer</a></li>
+       <li><a href="#Shape">Shape</a></li>
+       <li><a href="#Sprite">Sprite</a></li>
+       <li><a href="#Stage">Stage</a></li>
+       <li><a href="#Text">Text</a></li>
+       <li><a href="#Bitmap">Bitmap</a></li>
+       <li><a href="#Moveclip">Moveclip</a></li>
+   </ul>
+</li>
+
+
+<li class='Shapes'>
+   <a href="#Shapes">Shapes</a>
+   <ul class="nav">
+       <li><a href="#Circle">Circle</a></li>
+       <li><a href="#Ellipse">Ellipse</a></li>
+       <li><a href="#Sector">Sector</a></li>
+       <li><a href="#Rect">Rect</a></li>
+       <li><a href="#Isogon">Isogon</a></li>
+       <li><a href="#Polygon">Polygon</a></li>
+       <li><a href="#Line">Line</a></li>
+       <li><a href="#BrokenLine">BrokenLine</a></li>
+       <li><a href="#Beziercurve">Beziercurve</a></li>
+       <li><a href="#Path">Path</a></li>
+   </ul>
+</li>
+
+
+
+
+
 
               
             </ul>
@@ -110,14 +149,37 @@
     
 </code></pre></div>
 
-    <h3 id="about-cando">Canvax能做什么</h3>
+    <h3 id="about-cando">如何使用Canvax</h3>
     <p>
-       面向未来的数据可视化解决方案
+    canvax重度依赖<code>underscore.js</code>，可以去其<a href="http://underscorejs.org/" target='_blank'>underscore.js官网</a>自行下载使用，也可以使用canvax提供的cdn版本<a href="http://g.tbcdn.cn/thx/canvax/library/underscore.js" target="_blank">http://g.tbcdn.cn/thx/canvax/library/underscore.js</a>
+    </p>
+    <p>
+    IE9- browser 需要依赖 <a href="http://flashcanvas.net/" target="_blank">FlashCanvas</a> or <a href="http://excanvas.sourceforge.net/" target="_blank">ExplorerCanvas</a> 来提供对不支持Canvas的browser实现兼容，FlashCanvas会在IE9- browser中把canvas自动转换为swf输出，而ExplorerCanvas则会自动在IE9- browser中把你的canvas项目自动输出为vml格式图形。 总的来说你只需要专注于canvas的开发，其他的事情就交给他们去吧。你只需要在引入两者任意合适你的解决方案，Canvax会做自动匹配。
+    </p>
+
+    <p>
+    最后，就是引入Canvax框架文件，你可以down下来canvax的开源项目自行压缩，也可以直接使用Canvax提供的在线cdn版本 <br />
+    <a href="http://g.tbcdn.cn/thx/canvax/index.js"><code>canvax-min.js</code></a> or <a href="http://g.tbcdn.cn/thx/canvax/index.js"><code>canvax.js</code></a>
+    
+    </p>
+
+    <p>
+    TODO:模块化开发的说明<br />
+    canvax框架采用模块化开发，目前只支持kissy的模块化开发和包管理依赖。后续会提供对AMD ，CMD 等模块化标准的支撑。
+    </p>
+
+    <h3 id="creat-canvax">如何创建Canvax项目</h3>
+
+    <p>
+    如果你已经准备好了上面说的准备工作，ok，我们可以开始来创建我们的canvax项目了。
     </p>
 
 
+    
+
 
 </div>
+ 
 
         </div>
       </div>
