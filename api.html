@@ -537,7 +537,7 @@ base_url: "../"
     <div class="bs-callout bs-callout-danger">
         <h4>Shape图形元素类</h4>
         <p>
-        基础自DisplayObject ，本身不提供具体的绘图实现，提供一个<code>draw</code>方法给具体的绘图子类继承实现，比如圆形累，继承Shape后在圆形类Circle中提供具体的draw方法的实现，目前Canvax系统提供的派生自Shape类的自定义图形有Circle,Ellipse,Rect......等，具体的可以在<a href="#shapes">shapes</a>中查阅。我们也可以在开发中自己继承shape类后自己来实现draw方法，绘制自己想要的任何图形.
+        继承自DisplayObject ，本身不提供具体的绘图实现，提供一个<code>draw</code>方法给具体的绘图子类继承实现，比如圆形累，继承Shape后在圆形类Circle中提供具体的draw方法的实现，目前Canvax系统提供的派生自Shape类的自定义图形有Circle,Ellipse,Rect......等，具体的可以在<a href="#shapes">shapes</a>中查阅。我们也可以在开发中自己继承shape类后自己来实现draw方法，绘制自己想要的任何图形.
         </p>
 
     </div>
@@ -570,5 +570,376 @@ base_url: "../"
       </table>
     </div>
 
+    <p>
+    这样，我们还是用开始的时候那个圆的demo，那个demo里面是用的canvax系统系统的Circle画的，那么如果不用Canvax系统提供的Circle类，我们要怎么来画这个圆呢。<br />
+    看代码
+    {% highlight js %}
+    //好吧，我们不直接用Shape.Circle来画圆了，我们换个方式来创建一个圆形，直接继承Shape。
+    var circle = new Canvax.Display.Shape({
+        context : {
+          x:55,
+          y:55, 
+          fillStyle   : 'rgba(220, 20, 60, 0.8)',// rgba supported
+          strokeStyle : "#e0173f",
+          lineWidth   : 2
+        },
+        draw   : function(ctx , context){
+          ctx.arc(0,0,50,0,Math.PI*2,true); 
+        }
+    });
+    {% endhighlight %}
+
+    </p>
+    详见DEMO如下，也可以<a target="_blank" href="../demo/shapes/shape.html">查看demo独立页面</a></br>
+    <iframe src="../demo/shapes/shape.html" width="150" height="150"></iframe>
+    TODO:目前用户自定义的图形，Canvax不提供事件检测和事件派发功能。因为，因为你画了个圆倒好说，要是画了个奇形怪状的图形，那么怎么检测，问题是Canvax还根本不知道你到底画了个啥。所以如果有需要事件检测，物理碰撞的元素，建议还是用Canvax提供的图形。都在canvax.Shapes下面，比如一开始的demo中的<code>Canvax.Shapes.Circle</code>
 </div>
 
+<div class="bs-docs-section">
+    <h3 id="Sprite">Sprite</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>Sprite类</h4>
+        <p>
+        继承自DisplayObjectContainer ，目前在Sprite上面没做过多的挖掘，基本上，你就把它当个普通的容器来用好了，具体点 就是可以把它当成是svg 里面的 g标签，用来做分组。 所以这里就对Sprite的说明略去500字
+        </p>
+
+    </div>
+    </p>
+</div>
+
+<div class="bs-docs-section">
+    <h3 id="Stage">Stage</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>Stage类</h4>
+        <p>
+        继承自DisplayObjectContainer ，在as3里面Stage就已经是整个项目文件的根节点了。但是在Canvax里面，因为分层优化的需要，所以，在Stage的上面，还有一层Canvax对象来管理所有的Stage。是不是有点拗口，是的。我把最外层的类就叫Canvax类。也是整个引擎的核心，当然，这里不是要说Canvax，而是Stage ， 在Canvax的世界里，一个sage实例对应着一个canvas元素节点。这个应该好理解哈。
+        </p>
+
+    </div>
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>context2D</td>
+           <td>
+               Stage对应的canvas的context2D
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<div class="bs-docs-section">
+    <h3 id="Canvax">Canvax</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>Canvax类</h4>
+        <p>
+        继承自DisplayObjectContainer ，用来管理分层设计的所有Stage列表。然后在接收注册在Canvax.el对象上面的事件，派发到对应的displayObject上面去。管理帧率，心跳包渲染机制的实现。不再main loop。
+        </p>
+
+    </div>
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>el</td>
+           <td>
+               对应在dom中的容器节点。
+           </td>
+         </tr>
+         <tr>
+           <td>mouseTarget</td>
+           <td>
+               鼠标位置所在的当前元素displayObject
+           </td>
+         </tr>
+
+         <tr>
+           <td>mouseX</td>
+           <td>
+               鼠标位置所在的相对当前canvax左上角的坐标x
+           </td>
+         </tr>
+
+         <tr>
+           <td>mouseY</td>
+           <td>
+               鼠标位置所在的相对当前canvax左上角的坐标y
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <h5>Canvax静态属性</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>Display</td>
+           <td>
+               在Canvax的静态属性Display可以获取到Stage , Sprite , Text , Shape , Moveclip , Bitmap 类的引用，无需单独加载对应的模块。比如<code>var Stage = Canvax.Display.Stage</code>
+
+           </td>
+         </tr>
+         <tr>
+           <td>Shapes</td>
+           <td>
+               在Canvax的静态属性Shapes可以获取到Beziercurve , BrokenLine , Circle , Ellipse , Isogon , Line , Path , Polygon , Rect , Sector 所有Canvax提供的图形类的引用，无需单独加载对应的模块。比如我想要用到矩形类，可以这样<code>var Rect = Canvax.Shapes.Rect</code>
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>Methods</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Method</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>setFrameRate</td>
+           <td>
+               <dl>
+                   <dt>参数：@num</dt>
+                   <dd>@num 要设置的帧率数据</dd>
+               </dl>
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+
+
+
+<div class="bs-docs-section">
+    <h3 id="Text">Text</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>Text类</h4>
+        <p>
+        继承自DisplayObject ，在讲DisplayObject的context的时候有说到，后面继承DisplayObject的子类，会有一些自己自定义的context属性，Text的使用基本上就是配置自己的一些context属性。
+        </p>
+
+    </div>
+    </p>
+
+    <h5>Context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>fontSize</td>
+           <td>
+               字体大小，默认13
+           </td>
+         </tr>
+
+         <tr>
+           <td>fontWeight</td>
+           <td>
+               默认normal
+           </td>
+         </tr>
+
+         <tr>
+           <td>fontFamily</td>
+           <td>
+               字体，默认微软雅黑
+           </td>
+         </tr>
+
+         <tr>
+           <td>textDecoration</td>
+           <td>
+               和css中的textDecoration一样。
+           </td>
+         </tr>
+
+         <tr>
+           <td>fontStyle</td>
+           <td>
+               文本的颜色，类似css中的color。
+           </td>
+         </tr>
+
+
+         <tr>
+           <td>lineHeight</td>
+           <td>
+               行高，默认1.3。
+           </td>
+         </tr>
+
+
+         <tr>
+           <td>textBackgroundColor</td>
+           <td>
+               文本背景色。默认为空
+           </td>
+         </tr>
+        </tbody>
+      </table>
+     </div>
+     另外还有textAlign ，textBaseline已经由于canvas自己提供，这里就不多啰嗦了
+</div>
+
+<div class="bs-docs-section">
+    <h3 id="Bitmap">Bitmap</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>Bitmap类</h4>
+        <p>
+        继承自Shape。
+        </p>
+
+    </div>
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>img</td>
+           <td>
+               bitmap的图片来源，可以是页面上面的img 也可以是某个canvas，但是一定要是已经加载完毕的状态才能用的哦，否则有什么后果自负啊。
+           </td>
+         </tr>
+        </tbody>
+      </table>
+     </div>
+
+    <h5>Context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>dx</td>
+           <td>
+               图片切片的x位置，默认为0
+           </td>
+         </tr>
+
+         <tr>
+           <td>dy</td>
+           <td>
+               图片切片的y位置，默认为0
+           </td>
+         </tr>
+
+         <tr>
+           <td>dWidth</td>
+           <td>
+               切片的width，默认为0
+           </td>
+         </tr>
+
+         <tr>
+           <td>dHeight</td>
+           <td>
+               切片的height，默认为0
+           </td>
+         </tr>
+
+        </tbody>
+      </table>
+     </div>
+</div>
+
+
+<div class="bs-docs-section">
+    <h3 id="Movieclip">Movieclip</h3>
+    <p>
+    <div class="bs-callout bs-callout-danger">
+        <h4>Bitmap类</h4>
+        <p>
+        继承自Shape。
+        </p>
+
+    </div>
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>img</td>
+           <td>
+               bitmap的图片来源，可以是页面上面的img 也可以是某个canvas，但是一定要是已经加载完毕的状态才能用的哦，否则有什么后果自负啊。
+           </td>
+         </tr>
+        </tbody>
+      </table>
+     </div>
+</div>
+
+  

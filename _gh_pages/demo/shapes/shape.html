@@ -61,14 +61,12 @@
                context : {
                    x:55,
                    y:55, 
-                   r : 50,
                    fillStyle   : 'rgba(220, 20, 60, 0.8)',// rgba supported
                    strokeStyle : "#e0173f",
                    lineWidth   : 2
                },
-               type:'shape',
                draw   : function(ctx , context){
-                   ctx.arc(0,0,context.r,0,Math.PI*2,true); 
+                   ctx.arc(0,0,50,0,Math.PI*2,true); 
                }
            });
          
