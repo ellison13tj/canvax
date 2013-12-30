@@ -12,7 +12,7 @@ port:             9001
 
 # Custom vars
 current_version:  0.1
-repo:             https://github.com/nickli/canvax
+repo:             https://github.com/canvax/canvax.github.io 
 
 download_source:  # 
 download_dist:    #
