@@ -17,15 +17,15 @@
 KISSY.add("canvax/shape/Line" , function(S,Shape,Base){
   var Line = function(opt){
       var self = this;
-      this.type = "Line";
+      this.type = "line";
       this.drawTypeOnly = "stroke";
       opt.context || (opt.context={})
       self._style = {
            lineType      : opt.context.lineType || null, //可选 虚线 实现 的 类型
-           xStart        : opt.context.xStart || 0 ,//{number},  // 必须，起点横坐标
-           yStart        : opt.context.yStart || 0 ,//{number},  // 必须，起点纵坐标
-           xEnd          : opt.context.xEnd   || 0 ,//{number},  // 必须，终点横坐标
-           yEnd          : opt.context.yEnd   || 0 //{number},  // 必须，终点纵坐标
+           xStart        : opt.context.xStart   || 0 ,//{number},  // 必须，起点横坐标
+           yStart        : opt.context.yStart   || 0 ,//{number},  // 必须，起点纵坐标
+           xEnd          : opt.context.xEnd     || 0 ,//{number},  // 必须，终点横坐标
+           yEnd          : opt.context.yEnd     || 0 //{number},  // 必须，终点纵坐标
       }
       arguments.callee.superclass.constructor.apply(this, arguments);
   };

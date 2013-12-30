@@ -97,7 +97,7 @@
        <li><a href="#Canvax">Canvax</a></li>
        <li><a href="#Text">Text</a></li>
        <li><a href="#Bitmap">Bitmap</a></li>
-       <li><a href="#Moveclip">Moveclip</a></li>
+       <li><a href="#Movieclip">Moveclip</a></li>
    </ul>
 </li>
 
@@ -114,8 +114,20 @@
        <li><a href="#Line">Line</a></li>
        <li><a href="#BrokenLine">BrokenLine</a></li>
        <li><a href="#Beziercurve">Beziercurve</a></li>
-       <li><a href="#Path">Path</a></li>
+       <li><a href="#Path">Path</a></li> 
    </ul>
+</li>
+
+<li class='Event'>
+<a href="#Event">Event</a>
+</li>
+
+<li class='propertyFactory'>
+<a href="#propertyFactory">propertyFactory</a>
+</li>
+
+<li class='Matrix'>
+<a href="#Matrix">Matrix</a>
 </li>
 
 
@@ -134,9 +146,10 @@
     <div class="page-header">
       <h1 id="about">关于(about Canvax)</h1>
     </div>
+</div>
+<div id="about-how" class="bs-docs-section">
 
-
-    <h3 id="about-how">Canvax是什么</h3>
+    <h2>Canvax是什么</h2>
     <p>
       Canvax主要解决两个问题，把绘图元素抽象为虚拟的对象树，然后给这些抽象的对象赋予事件侦听的能力
     </p>
@@ -150,7 +163,11 @@
     
 </code></pre></div>
 
-    <h3 id="about-cando">如何使用Canvax</h3>
+</div>
+
+<div id="about-cando" class="bs-docs-section">
+
+    <h2>如何使用Canvax</h2>
     <p>
     canvax重度依赖<code>underscore.js</code>，可以去其<a href="http://underscorejs.org/" target='_blank'>underscore.js官网</a>自行下载使用，也可以使用canvax提供的cdn版本<a href="http://g.tbcdn.cn/thx/canvax/library/underscore.js" target="_blank">http://g.tbcdn.cn/thx/canvax/library/underscore.js</a>
     </p>
@@ -169,7 +186,11 @@
     canvax框架采用模块化开发，目前只支持kissy的模块化开发和包管理依赖。后续会提供对AMD ，CMD 等模块化标准的支撑。
     </p>
 
-    <h3 id="creat-canvax">如何创建Canvax项目</h3>
+</div>
+
+<div id="creat-canvax" class="bs-docs-section">
+
+    <h2 >如何创建Canvax项目</h2>
 
     <p>
     如果你已经准备好了上面说的准备工作，ok，我们可以开始来创建我们的canvax项目了。
@@ -251,8 +272,9 @@
     <div class="page-header">
         <h1 id="displayList">DisplayList</h1>
     </div>
-
-    <h3 id="DisplayObject">DisplayObject</h3>
+</div>
+<div id="DisplayObject" class="bs-docs-section">
+    <h3>DisplayObject</h3>
 
     <p>
     <div class="bs-callout bs-callout-danger">
@@ -499,8 +521,8 @@
 </div>
 
 
-<div class="bs-docs-section">
-    <h3 id="DisplayObjectContainer">DisplayObjectContainer</h3>
+<div class="bs-docs-section" id="DisplayObjectContainer">
+    <h3 >DisplayObjectContainer</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>所有显示对象容器的基类</h4>
@@ -653,8 +675,8 @@
 
 </div>
 
-<div class="bs-docs-section">
-    <h3 id="Shape">Shape</h3>
+<div class="bs-docs-section"  id="Shape">
+    <h3>Shape</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>Shape图形元素类</h4>
@@ -724,8 +746,8 @@
     TODO:目前用户自定义的图形，Canvax不提供事件检测和事件派发功能。因为，因为你画了个圆倒好说，要是画了个奇形怪状的图形，那么怎么检测，问题是Canvax还根本不知道你到底画了个啥。所以如果有需要事件检测，物理碰撞的元素，建议还是用Canvax提供的图形。都在canvax.Shapes下面，比如一开始的demo中的<code>Canvax.Shapes.Circle</code>
 </div>
 
-<div class="bs-docs-section">
-    <h3 id="Sprite">Sprite</h3>
+<div id="Sprite" class="bs-docs-section">
+    <h3 >Sprite</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>Sprite类</h4>
@@ -737,8 +759,8 @@
     </p>
 </div>
 
-<div class="bs-docs-section">
-    <h3 id="Stage">Stage</h3>
+<div id="Stage" class="bs-docs-section">
+    <h3>Stage</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>Stage类</h4>
@@ -778,8 +800,8 @@
     </div>
 </div>
 
-<div class="bs-docs-section">
-    <h3 id="Canvax">Canvax</h3>
+<div id="Canvax" class="bs-docs-section">
+    <h3>Canvax</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>Canvax类</h4>
@@ -894,8 +916,8 @@
 
 
 
-<div class="bs-docs-section">
-    <h3 id="Text">Text</h3>
+<div id="Text" class="bs-docs-section">
+    <h3>Text</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>Text类</h4>
@@ -995,8 +1017,8 @@
      另外还有textAlign ，textBaseline已经由于canvas自己提供，这里就不多啰嗦了
 </div>
 
-<div class="bs-docs-section">
-    <h3 id="Bitmap">Bitmap</h3>
+<div id="Bitmap" class="bs-docs-section">
+    <h3>Bitmap</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>Bitmap类</h4>
@@ -1080,8 +1102,8 @@
 </div>
 
 
-<div class="bs-docs-section">
-    <h3 id="Movieclip">Movieclip</h3>
+<div id="Movieclip" class="bs-docs-section">
+    <h3>Movieclip</h3>
     <p>
     <div class="bs-callout bs-callout-danger">
         <h4>Movieclip类</h4>
@@ -1119,9 +1141,807 @@
         </tbody>
       </table>
      </div>
+
+
+    <h5>Methods</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">method</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr>
+           <td>getStatus</td>
+           <td>
+               <dl>
+                   <dt>参数：无</dt>
+                   <dd>返回：查询movieclip当前是否处于自动播放状态</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>getFrameRate</td>
+           <td>
+               <dl>
+                   <dt>参数：无</dt>
+                   <dd>返回：查询movieclip当前帧率</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>setFrameRate</td>
+           <td>
+               <dl>
+                   <dt>参数：@frameRate</dt>
+                   <dd>设置新的帧率</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>gotoAndStop</td>
+           <td>
+               <dl>
+                   <dt>参数：@index</dt>
+                   <dd>跳到第@index帧并且停止播放</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>stop</td>
+           <td>
+               <dl>
+                   <dt>参数：无</dt>
+                   <dd>停止播放</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>gotoAndPlay</td>
+           <td>
+               <dl>
+                   <dt>参数：@index</dt>
+                   <dd>跳到第@index帧并且开始播放</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>play</td>
+           <td>
+               <dl>
+                   <dt>参数：无</dt>
+                   <dd>开始播放</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>next</td>
+           <td>
+               <dl>
+                   <dt>参数：无</dt>
+                   <dd>下一帧，在停止播放的状态下有效</dd>
+               </dl>
+           </td>
+         </tr>
+
+         <tr>
+           <td>pre</td>
+           <td>
+               <dl>
+                   <dt>参数：无</dt>
+                   <dd>上一帧，在停止播放的状态下有效</dd>
+               </dl>
+           </td>
+         </tr>
+
+        </tbody>
+      </table>
+    </div>
+    
+    DEMO如下，也可以<a target="_blank" href="../demo/moveclip-test/index.html">查看demo独立页面</a></br>
+    说明：下面demo中共有三个movieclip，上面的一排按钮都只是用来控制第一个movieclip，后面的两个鸟，是用来说明Canvax的movieclip具备的设置不同帧率的能力。
+    <iframe src="../demo/moveclip-test/index.html" width="650" height="300"></iframe>
 </div>
 
+<div class="bs-docs-section">
+    <div class="page-header">
+        <h1 id="Shapes">Shapes</h1>
+        <div class="bs-callout bs-callout-danger">
+            <p>
+            继承自<code>Display.Shape</code>类。Canvax提供的图形类，使用这些类可以很高效的开发出各种图形项目，而且，这些Canvax提供的图形类都具备有事件检测，绑定，派发的功能。比如第一个例子中的<br/>
+            circle.hover(function(){<br/>
+            &nbsp;&nbsp;this.context.lineWidth = 5;<br/>
+            },function(){<br/>
+              &nbsp;&nbsp;this.context.lineWidth = 2;<br/>
+            });<br/>
+            这就是我们在dom开发中常用到的事件绑定的方式。是不是很强大...<br />
+
+            下面我们依次列出这些自定义图形的使用
+
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<div id="Circle" class="bs-docs-section">
+    <h3>Circle</h3>
+    <p>
+    继承自Display.Shape类，circle的自定义context属性只有一个半径{r}。Circle的坐标原点在圆心。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "circle"
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>r</td>
+           <td>
+               必须，圆半径
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<div id="Ellipse" class="bs-docs-section">
+    <h3>Ellipse</h3>
+    <p>
+    继承自Display.Shape类 ，Ellipse的自定义context属性有{hr},{vr}。坐标原点在长边为半径的圆的圆心。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "ellipse"
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>hr</td>
+           <td>
+               必须，椭圆横轴半径
+           </td>
+         </tr>
+
+         <tr>
+           <td>vr</td>
+           <td>
+               必须，椭圆纵轴半径
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<div id="Sector" class="bs-docs-section">
+    <h3>Sector</h3>
+    <p>
+    继承自Display.Shape类 ，Sector的自定义context属性有{r0},{r},{startAngle},{endAngle}。坐标原点在内圆的圆心。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "sector"
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>r0</td>
+           <td>
+               默认为0，内圆半径指定后将出现内弧，同时扇边长度 = r - r0
+           </td>
+         </tr>
+
+         <tr>
+           <td>r</td>
+           <td>
+               必须，外圆半径
+           </td>
+         </tr>
+
+         <tr>
+           <td>startAngle</td>
+           <td>
+               必须，起始角度[0, 360)
+           </td>
+         </tr>
+
+         <tr>
+           <td>endAngle</td>
+           <td>
+               必须，结束角度(0, 360)
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
   
+
+
+<div id="Rect" class="bs-docs-section">
+    <h3>Rect</h3>
+    <p>
+    继承自Display.Shape类 ，Sector的自定义context属性有{width},{height},{radius}。坐标原点在矩形的左上角。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "rect"
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>width</td>
+           <td>
+               必须，宽度
+           </td>
+         </tr>
+
+         <tr>
+           <td>height</td>
+           <td>
+               必须，高度
+           </td>
+         </tr>
+
+         <tr>
+           <td>radius</td>
+           <td>
+               圆角，右上，右下，左下，左上 四个方位的 圆角半径的数组，比如[2,5,10,5],则说明这个矩形的圆角依次是右上半径==2 右下半径==5 左下半径==10 左上半径==5。
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+
+<div id="Isogon" class="bs-docs-section">
+    <h3>Isogon</h3>
+    <p>
+    继承自Display.Shape类 ，正n边形（n>=3），Isogon的自定义context属性有{r},{n}。坐标原点在r为半径的正n边形外接圆的圆心。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "isogon"
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        
+         <tr>
+           <td>r</td>
+           <td>
+               必须，正n边形外接圆半径
+           </td>
+         </tr>
+
+         <tr>
+           <td>n</td>
+           <td>
+               必须，指明正几边形
+           </td>
+         </tr>
+   
+        </tbody>
+      </table>
+    </div>
+</div>
+
+
+
+<div id="Polygon" class="bs-docs-section">
+    <h3>Polygon</h3>
+    <p>
+    继承自Display.Shape类 ，多边形 类  （不规则），Polygon的自定义context属性有{lineType},{pointList}。坐标原点在多边形外接矩形的左上角。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "polygon"
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>lineType</td>
+           <td>
+               边框的类型，目前支持(虚线)"dashed",(实线)"solid"两种，默认"solid"
+           </td>
+         </tr>
+
+         <tr>
+           <td>pointList</td>
+           <td>
+               必须，多边形各个顶角坐标
+           </td>
+         </tr>
+
+        </tbody>
+      </table>
+    </div>
+</div>
+
+
+
+<div id="Line" class="bs-docs-section">
+    <h3>Line</h3>
+    <p>
+    继承自Display.Shape类 ，Line的自定义context属性有{lineType},{xStart},{yStart},{xEnd},{yEnd}。坐标原点为外接矩形范围的左上角。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "line"
+           </td>
+         </tr>
+
+        <tr>
+           <td>drawTypeOnly</td>
+           <td>
+               "stroke",只读，因为line不应该有fill，你一定要fill的话，有什么问题我可不负责
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>lineType</td>
+           <td>
+               可选 虚线 实现 的 类型
+           </td>
+         </tr>
+
+         <tr>
+           <td>xStart</td>
+           <td>
+               必须，起点横坐标x
+           </td>
+         </tr>
+
+         <tr>
+           <td>yStart</td>
+           <td>
+               必须，起点纵坐标y
+           </td>
+         </tr>
+
+         <tr>
+           <td>xEnd</td>
+           <td>
+               必须，终点横坐标x
+           </td>
+         </tr>
+
+         <tr>
+           <td>yEnd</td>
+           <td>
+               必须，终点纵坐标y
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+
+
+<div id="BrokenLine" class="bs-docs-section">
+    <h3>BrokenLine</h3>
+    <p>
+    继承自Display.Shape类 ，BrokenLine的自定义context属性有{pointList}。坐标原点在外接矩形范围的左上角。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "brokenLine"
+           </td>
+         </tr>
+
+        <tr>
+           <td>drawTypeOnly</td>
+           <td>
+               "stroke"，依然是线条不应该去fill，只stroke就好了。这很好理解，只读
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>pointList</td>
+           <td>
+               必须，各个顶角坐标
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+
+
+<div id="Beziercurve" class="bs-docs-section">
+    <h3>Beziercurve</h3>
+    <p>
+    继承自Display.Shape类 ，Beziercurve的自定义context属性有{xStart},{yStart},{cpX1},{cpY1},{cpX2},{cpY2},{xEnd},{yEnd}。外接矩形左上角。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "beziercurve"
+           </td>
+         </tr>
+
+        <tr>
+           <td>drawTypeOnly</td>
+           <td>
+               "stroke"，只读。线条不需要fill
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>xStart</td>
+           <td>
+               必须，起点横坐标
+           </td>
+         </tr>
+
+         <tr>
+           <td>yStart</td>
+           <td>
+               必须，起点纵坐标
+           </td>
+         </tr>
+
+         <tr>
+           <td>cpX1</td>
+           <td>
+               必须，第一个关联点横坐标
+           </td>
+         </tr>
+
+         <tr>
+           <td>cpY1</td>
+           <td>
+               必须，第一个关联点纵坐标
+           </td>
+         </tr>
+
+         <tr>
+           <td>cpX2</td>
+           <td>
+               可选，第二个关联点横坐标 ， 缺省即为二次贝塞尔曲线
+           </td>
+         </tr>
+
+         <tr>
+           <td> cpY2 </td>
+           <td>
+               可选，第二个关联点纵坐标 ， 缺省即为二次贝塞尔曲线
+           </td>
+         </tr>
+
+         <tr>
+           <td>xEnd</td>
+           <td>
+               必须，终点横坐标
+           </td>
+         </tr>
+
+         <tr>
+           <td>yEnd</td>
+           <td>
+               必须，终点纵坐标
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<div id="Path" class="bs-docs-section">
+    <h3>Path</h3>
+    <p>
+    继承自Display.Shape类 ，Path的自定义context属性有{path}，坐标原点为外接矩形范围的左上角。
+    </p>
+
+    <h5>Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>type</td>
+           <td>
+               "path"
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h5>context-Propertys</h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+         <tr>
+           <th style="width: 150px;">Name</th>
+           <th>Description</th>
+         </tr>
+        </thead>
+        <tbody>
+        <tr>
+           <td>path</td>
+           <td>
+               可以直接拿svg中的path数据。<br />
+               字符串 必须，路径。例如:M 0 0 L 0 10 L 10 10 Z (一个三角形)<br />
+               M = moveto<br />
+               L = lineto<br />
+               H = horizontal lineto<br />
+               V = vertical lineto<br />
+               C = curveto<br />
+               S = smooth curveto<br />
+               Q = quadratic Belzier curve<br />
+               T = smooth quadratic Belzier curveto<br />
+               Z = closepath
+
+           </td>
+         </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
 
         </div>
       </div>
